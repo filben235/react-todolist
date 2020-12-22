@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import axios from 'axios';
  
 
 import Header from './components/todos/Header';
@@ -12,23 +13,12 @@ import './App.css';
 class App extends Component {
   state = {
     //stores info about todos
-    todos: [
-      {
-        id: 1,
-        title: 'Ät bröd',
-        completed: false
-      },
-      {
-        id: 2,
-        title: 'Köp bröd',
-        completed: false
-      },
-      {
-        id: 3,
-        title: 'Ät bröd igen',
-        completed: false
-      }
-    ]
+    todos: []
+  }
+
+  componentDidMount(){
+    axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
+    .then(res => this.setState({ todos: res.data }))
   }
 
   //toggles todo.completed
@@ -42,18 +32,17 @@ class App extends Component {
   }
 
   addTodo = (title) => {
-    const newTodo = {
-      id: 4,
-      //same as title = title in ES6
+    axios.post('https://jsonplaceholder.typicode.com/todos', {
       title,
       completed: false
-    }
-    this.setState({ todos: [...this.state.todos, newTodo] })
+    })
+    .then(res => this.setState({ todos: [...this.state.todos, res.data] }))
   }
 
   //returns all the todo items that don't have a matching id with the delete button id
   removeTodo = (id) => {
-    this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] });
+    axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+    .then(res => this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] }));
   }
   
   render() {
