@@ -13,3 +13,15 @@ a {
   color: #333;
   text-decoration: none;
 }
+
+.container {
+  padding: 0 2vw;
+}
+
+.btn {
+  cursor: pointer;
+  border: none;
+  background: #555;
+  color: #fff;
+  font-size: 1.1rem;
+}
