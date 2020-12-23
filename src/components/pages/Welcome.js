@@ -5,7 +5,6 @@ export class Welcome extends Component {
   render() {
     return (
       <div style={welcomeStyle}>
-        <h1>moro</h1>
         <SignIn />
       </div>
     )

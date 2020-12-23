@@ -52,11 +52,11 @@ class App extends Component {
       <Router>
         <div className="App">
           <div className="container">
-          <Header />
             <Route exact path="/" component={Welcome} />
             <Route path="/about" component={About} />
             <Route path="/main" render={props => (
               <>
+                <Header />
                 <NavBar isSignedIn={this.state.isSignedIn}/>
                 <AddTodo addTodo={this.addTodo}/>
                 <Todos 
