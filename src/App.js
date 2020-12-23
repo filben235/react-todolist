@@ -2,8 +2,9 @@ import { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
  
-
-import Header from './components/todos/Header';
+import Welcome from './components/pages/Welcome';
+import Header from './components/Header';
+import NavBar from './components/NavBar';
 import Todos from './components/Todos';
 import AddTodo from './components/AddTodo';
 import About from './components/pages/About';
@@ -13,7 +14,8 @@ import './App.css';
 class App extends Component {
   state = {
     //stores info about todos
-    todos: []
+    todos: [],
+    isSignedIn: false
   }
 
   componentDidMount(){
@@ -50,10 +52,12 @@ class App extends Component {
       <Router>
         <div className="App">
           <div className="container">
-            <Header />
-            <Route exact path="/" render={props => (
-              //Empty tags is new short syntax for React.Fragment
+          <Header />
+            <Route exact path="/" component={Welcome} />
+            <Route path="/about" component={About} />
+            <Route path="/main" render={props => (
               <>
+                <NavBar isSignedIn={this.state.isSignedIn}/>
                 <AddTodo addTodo={this.addTodo}/>
                 <Todos 
                   todos={this.state.todos}
@@ -62,7 +66,6 @@ class App extends Component {
                 />
               </>
             )} />
-            <Route path="/about" component={About} />
           </div>
         </div>
       </Router>
