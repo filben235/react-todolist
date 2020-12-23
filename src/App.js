@@ -8,14 +8,13 @@ import NavBar from './components/NavBar';
 import Todos from './components/Todos';
 import AddTodo from './components/AddTodo';
 import About from './components/pages/About';
-
 import './App.css';
 
 class App extends Component {
   state = {
     //stores info about todos
     todos: [],
-    isSignedIn: false
+    isSignedIn: true
   }
 
   componentDidMount(){
