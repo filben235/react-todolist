@@ -1,24 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import './Signin.css';
+import './style/Signin.css';
+import {AppContext} from './ContextProvider';
 
 export default function SignIn() {
+  //used for updating email and password as it is being typed
   const [signInEmail, setSigninEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
-  const history = useHistory();
+  
+  //gives access the apps state
+  const [state, changeState] = useContext(AppContext);
 
-  function handleClick() {
+  //used to route to different pages
+  const history = useHistory();
+  //redirects to main page
+  function redirect() {
     history.push("/main");
   }
 
+  //updates email as it is being typed
   function onEmailChange(event) {
     setSigninEmail(event.target.value);
   }
-
+  //updates password as it is being typed
   function onPasswordChange(event) {
     setSignInPassword(event.target.value);
   }
 
+  //handles server request for signing in
   function onSubmitSignIn() {
     fetch('http://localhost:3001/signin', {
       method: 'post',
@@ -31,8 +40,9 @@ export default function SignIn() {
       .then(response => response.json())
       .then(data => {
         if(data.email === signInEmail) {
-          console.log(`hello ${signInEmail}`);
-          handleClick();
+          console.log(state.activeUser);
+          changeState(data.user_name);
+          redirect();
         }
       })
     }
@@ -62,6 +72,7 @@ export default function SignIn() {
           <p className="animation a5 register-button"><a href="#">No account? Register now!</a></p>
         </div>
       </div>
+      
       <div className="right animation a6">
         <div className="text">
           <p>Organize it all with</p>

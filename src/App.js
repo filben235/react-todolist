@@ -1,26 +1,24 @@
 import { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
- 
-import Welcome from './components/pages/Welcome';
-import Header from './components/Header';
-import NavBar from './components/NavBar';
+
+import {ContextProvider} from './components/ContextProvider';
 import Todos from './components/Todos';
 import AddTodo from './components/AddTodo';
-import About from './components/pages/About';
 import './App.css';
+import SignIn from './components/SignIn';
+import Main from './components/Main';
 
 class App extends Component {
   state = {
-    //stores info about todos
-    todos: [],
-    isSignedIn: true
+    todos: []
   }
 
+  //gets todo items from jsonplaceholder
   componentDidMount(){
     axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
     .then(res => this.setState({ todos: res.data }))
-  }
+  } 
 
   //toggles todo.completed
   markComplete = (id) => {
@@ -32,6 +30,7 @@ class App extends Component {
     }) });
   }
 
+  //adds a todo to the list
   addTodo = (title) => {
     axios.post('https://jsonplaceholder.typicode.com/todos', {
       title,
@@ -40,7 +39,7 @@ class App extends Component {
     .then(res => this.setState({ todos: [...this.state.todos, res.data] }))
   }
 
-  //returns all the todo items that don't have a matching id with the delete button id
+  //removes the todo item that matches the delete button id
   removeTodo = (id) => {
     axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
     .then(res => this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] }));
@@ -48,26 +47,16 @@ class App extends Component {
   
   render() {
     return (
-      <Router>
-        <div className="App">
-          <div className="container">
-            <Route exact path="/" component={Welcome} />
-            <Route path="/about" component={About} />
-            <Route path="/main" render={props => (
-              <>
-                <Header />
-                <NavBar isSignedIn={this.state.isSignedIn}/>
-                <AddTodo addTodo={this.addTodo}/>
-                <Todos 
-                  todos={this.state.todos}
-                  markComplete={this.markComplete}
-                  removeTodo={this.removeTodo}
-                />
-              </>
-            )} />
+      <ContextProvider>
+        <Router>
+          <div className="App">
+            <div className="container">
+              <Route path='/main' component={Main} />
+              <Route exact path='/' component={SignIn} />
+            </div>
           </div>
-        </div>
-      </Router>
+        </Router>
+      </ContextProvider>
     );
   }
 }
