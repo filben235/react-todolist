@@ -2,12 +2,15 @@ import { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
 
-import {ContextProvider} from './components/ContextProvider';
-import Todos from './components/Todos';
-import AddTodo from './components/AddTodo';
-import './App.css';
+//importing components
 import SignIn from './components/SignIn';
 import Main from './components/Main';
+import Register from './components/Register';
+// import Todos from './components/Todos';
+// import AddTodo from './components/AddTodo';
+
+//importing styling
+import './App.css';
 
 class App extends Component {
   state = {
@@ -47,16 +50,15 @@ class App extends Component {
   
   render() {
     return (
-      <ContextProvider>
-        <Router>
-          <div className="App">
-            <div className="container">
-              <Route path='/main' component={Main} />
-              <Route exact path='/' component={SignIn} />
-            </div>
+      <Router>
+        <div className="App">
+          <div className="container">
+            <Route path='/main' component={Main} />            
+            <Route path='/register' component={Register} />            
+            <Route exact path='/' component={SignIn} />
           </div>
-        </Router>
-      </ContextProvider>
+        </div>
+      </Router>
     );
   }
 }

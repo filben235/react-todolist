@@ -1,15 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './style/Signin.css';
-import {AppContext} from './ContextProvider';
 
 export default function SignIn() {
   //used for updating email and password as it is being typed
   const [signInEmail, setSigninEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
-  
-  //gives access the apps state
-  const [state, changeState] = useContext(AppContext);
 
   //used to route to different pages
   const history = useHistory();
@@ -27,7 +23,7 @@ export default function SignIn() {
     setSignInPassword(event.target.value);
   }
 
-  //handles server request for signing in
+  //handles server request for signing in and calls redirect if matches with database
   function onSubmitSignIn() {
     fetch('http://localhost:3001/signin', {
       method: 'post',
@@ -40,8 +36,6 @@ export default function SignIn() {
       .then(response => response.json())
       .then(data => {
         if(data.email === signInEmail) {
-          console.log(state.activeUser);
-          changeState(data.user_name);
           redirect();
         }
       })
@@ -72,7 +66,6 @@ export default function SignIn() {
           <p className="animation a5 register-button"><a href="#">No account? Register now!</a></p>
         </div>
       </div>
-      
       <div className="right animation a6">
         <div className="text">
           <p>Organize it all with</p>
